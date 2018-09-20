@@ -8,7 +8,7 @@ float data;
 data = x * y / z;
 }
 
-Second test program;
+float Second test program;
 
 float mul(float m, float c){
 m = m * c;
