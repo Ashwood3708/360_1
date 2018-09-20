@@ -90,6 +90,13 @@ public class operations {
 
     int isVariable(String h) {
         try {
+            
+            if (h.equals("+") || h.equals("-") || h.equals("*")  || h.equals("/") || h.equals("=") ) {
+                isToken(h);
+                return 1;
+            }
+                
+            
             if (h.contains("(){")) {
             isToken("(");
             isToken(")");
@@ -97,8 +104,10 @@ public class operations {
                     return 1;
             }
             
+            String[] g ;
+            
             if (h.contains("(")) {
-                String[] g = h.split("(");
+                g = h.split("(");
                 int p = openStatement(g[0]);
                 if (p == 0) {
                     isToken("(");
@@ -106,7 +115,7 @@ public class operations {
                 }
             }
             if (h.contains(",")) {
-                String[] g = h.split(",");
+                g = h.split(",");
                 int p = openStatement(g[0]);
                 if (p == 0) {
                      isToken(",");
@@ -114,7 +123,7 @@ public class operations {
                 }
             }
             if (h.contains("*")) {
-                String[] g = h.split("*");
+                 g = h.split("*");
                 int p = openStatement(g[0]);
                 if (p == 0) {
                      isToken("*");
@@ -122,7 +131,7 @@ public class operations {
                 }
             }
             if (h.contains("=")) {
-                String[] g = h.split("=");
+                g = h.split("=");
                 int p = openStatement(g[0]);
                 if (p == 0) {
                      isToken("=");
@@ -130,7 +139,7 @@ public class operations {
                 }
             }
             if (h.contains("+")) {
-                String[] g = h.split("+");
+                g = h.split("+");
                 int p = openStatement(g[0]);
                 if (p == 0) {
                      isToken("+");
@@ -138,7 +147,7 @@ public class operations {
                 }
             }
             if (h.contains("-")) {
-                String[] g = h.split("-");
+                g = h.split("-");
                 int p = openStatement(g[0]);
                 if (p == 0) {
                      isToken("-");
@@ -146,7 +155,7 @@ public class operations {
                 }
             }
             if (h.contains("/")) {
-                String[] g = h.split("/");
+                g = h.split("/");
                 int p = openStatement(g[0]);
                 if (p == 0) {
                      isToken("/");
@@ -154,7 +163,7 @@ public class operations {
                 }
             }
             if (h.contains(")")) {
-                String[] g = h.split(")");
+                 g = h.split(")");
                 int p = openStatement(g[0]);
                 if (p == 0) {
                      isToken(")");
@@ -168,7 +177,7 @@ public class operations {
 
         } catch (Exception e) {
             
-            System.out.println("program will not run 2");
+            System.out.println("program will not run 2 = " + h);
         }
         return 0;
     }
@@ -252,7 +261,7 @@ public class operations {
 
                 case "}":
                     lexemes.add("}");
-                    tokens.add("OPEN_CULRB");
+                    tokens.add("CLOSE_CULRB");
                     break;
 
                 case "[":
@@ -297,6 +306,21 @@ public class operations {
             }
         }
     
+void print(){
+        operations.print(lexemes, tokens);
+    }
+
+    public static void print(ArrayList<String> lex, ArrayList<String> tok) {
+        String heading1 = "Lexemes";
+        String heading2 = "Tokens";
+        String divider = "------------------------------------";
+        System.out.printf( "%-15s %-15s %n", heading1, heading2);
+        System.out.println(divider);
+        for (int i = 0; i < lex.size(); i++) {
+            System.out.printf( "%-15s %-15s %n", lex.get(i), tok.get(i));
+        }
+        System.out.println(divider);
+    }
 
 
 }

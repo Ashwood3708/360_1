@@ -37,7 +37,7 @@ public class Main {
                 if (r.openStatement(u[0]) == 1 || u[1].equals("=")) {
                     for (int i = 1; i < u.length; i++) {
                         nonerror = r.isVariable(u[i]);
-                        System.out.println(u[i]);
+                        //System.out.println(u[i]);
                     }
                 } else {
                     nonerror = 0;
@@ -53,12 +53,7 @@ public class Main {
 
             if (nonerror == 1) {
                 System.out.println("program runs");
-                System.out.println("Lexemes                Tokens");
-                System.out.println();
-                for (int i = 0; i < r.lexemes.size(); i++) {
-                    
-                    System.out.println(r.lexemes.get(i) + "              " + r.tokens.get(i));
-                }
+                r.print();
             } else {
                 System.out.println("program does not run 1");
             }
