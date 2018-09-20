@@ -28,26 +28,35 @@ public class Main {
             Scanner sc = new Scanner(file);
             int nonerror = 1;
 
-            String datatype;
+            String datatype = sc.nextLine();
             while (sc.hasNext() && nonerror == 1) {
                 datatype = sc.nextLine();
+                //System.out.print(datatype);
                 String[] u = datatype.split(" ");
+                
+                if (r.openStatement(u[0]) == 1) {
+                    for (int i = 1; i < u.length; i++) {
+                        //nonerror = r.isVariable(u[i]);
+                    }
+                } else {
+                    nonerror = 0;
+                }
 
-                System.out.print(datatype);
-                if (!datatype.isEmpty()) {
-                    nonerror = r.endStatement(datatype);
+                if (r.endStatement(datatype) == 0) {
+                    nonerror = 0;
                 }
-                for (int i = 0; i < u.length; i++) {
-                    int p = r.isDataType(u);
-                    
-                }
-                System.out.println();
+                //System.out.println();
             }
-            
+
+            System.out.println();
+
             if (nonerror == 1) {
                 System.out.println("program runs");
+                for (int i = 0; i < r.lexemes.size(); i++) {
+                    System.out.println(r.lexemes.get(i));
+                }
             } else {
-                System.out.println("program does not run");
+                System.out.println("program does not run 1");
             }
 
         } catch (IOException e) {

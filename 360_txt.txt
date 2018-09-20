@@ -1,4 +1,4 @@
-First test program
+First test program;
 
 float test (){
 float x;
@@ -8,9 +8,8 @@ float data;
 data = x * y / z;
 }
 
-Second test program
+Second test program;
 
-float mul()
-float m, float c){
+float mul(float m, float c){
 m = m * c;
 }
