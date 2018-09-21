@@ -31,14 +31,13 @@ public class Main {
             String datatype = sc.nextLine();
             while (sc.hasNext() && nonerror == 1) {
                 datatype = sc.nextLine();
-                //System.out.print(datatype);
+                System.out.println(datatype);
                 String[] u = datatype.split(" ");
-                
-                if (r.openStatement(u[0]) == 1 || u[1].equals("=")) {
-                    for (int i = 1; i < u.length; i++) {
-                        nonerror = r.isVariable(u[i]);
-                        //System.out.println(u[i]);
-                    }
+
+                if (r.openStatement(u[0]) == 1) {  
+                    nonerror = r.isV(u,1);
+                }else if (u[1].equals("=")){
+                    nonerror = r.isV(u, 0);
                 } else {
                     nonerror = 0;
                 }
@@ -54,7 +53,7 @@ public class Main {
             if (nonerror == 1) {
                 System.out.println("program runs");
                 r.print();
-            } else {
+            } else if(nonerror == 0){
                 System.out.println("program does not run 1");
             }
 

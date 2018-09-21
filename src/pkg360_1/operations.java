@@ -19,7 +19,11 @@ public class operations {
 
     public int openStatement(String x) {
 
-        if (x.equals("") || x.equals(" ") || x.equals("}")) {
+        if (x.equals("") || x.equals(" ")) {
+            return 1;
+        }
+        if (x.equals("}")) {
+            isToken(x);
             return 1;
         }
         if (x.equals(
@@ -59,7 +63,7 @@ public class operations {
             return 1;
         }
 
-        // if n=1 then there is a datatype
+        // if n=1 then there is a datatype or }
         //if n =0 then there is variable
         return 0;
 
@@ -68,7 +72,6 @@ public class operations {
     // this function takes in a string and checks the last character of the string to see if statements and methods are properly closed
     int endStatement(String theStr) {
         if (theStr.equals("") || theStr.equals(" ")) {
-            //System.out.print(" YES ");
             return 1;
         } else {
             char last = theStr.charAt(theStr.length() - 1);
@@ -87,12 +90,16 @@ public class operations {
 
     }
 
-    int isVariable(String h) {
+    int isSymbol(String h) {
         try {
 
-            if (h.equals("+") || h.equals("-") || h.equals("*") || h.equals("/") || h.equals("=") || h.equals(",") || h.equals(";")) {
+            if (h.equals("+") || h.equals("-") || h.equals("*") || h.equals("/") || h.equals("=")) {
                 isToken(h);
                 return 1;
+            }
+            if (h.equals(";")) {
+                isToken(h);
+                return 2;
             }
 
             if (h.contains("(){")) {
@@ -101,72 +108,49 @@ public class operations {
                 isToken("{");
                 return 1;
             }
-
-            String[] g;
+            if (h.contains("){")) {
+                isToken(")");
+                isToken("{");
+                return 1;
+            }
 
             if (h.contains("(")) {
-                g = h.split("(");
-                int p = openStatement(g[0]);
-                if (p == 0) {
-                    isToken("(");
-                    return 1;
-                }
+                isToken("(");
+                return 2;
+
             }
-            if (h.contains(",")) {
-                g = h.split(",");
-                int p = openStatement(g[0]);
-                if (p == 0) {
-                    isToken(",");
-                    return 1;
-                }
+            if (h.equals(",")) {
+                isToken(",");
+                return 2;
+
             }
             if (h.contains("*")) {
-                g = h.split("*");
-                int p = openStatement(g[0]);
-                if (p == 0) {
-                    isToken("*");
-                    return 1;
-                }
-            }
-            if (h.contains("=")) {
-                g = h.split("=");
-                int p = openStatement(g[0]);
-                if (p == 0) {
-                    isToken("=");
-                    return 1;
-                }
-            }
-            if (h.contains("+")) {
-                g = h.split("+");
-                int p = openStatement(g[0]);
-                if (p == 0) {
-                    isToken("+");
-                    return 1;
-                }
-            }
-            if (h.contains("-")) {
-                g = h.split("-");
-                int p = openStatement(g[0]);
-                if (p == 0) {
-                    isToken("-");
-                    return 1;
-                }
+                isToken("*");
+                return 1;
             }
             if (h.contains("/")) {
-                g = h.split("/");
-                int p = openStatement(g[0]);
-                if (p == 0) {
-                    isToken("/");
-                    return 1;
-                }
+                isToken("/");
+                return 1;
             }
+            if (h.contains("-")) {
+                isToken("-");
+                return 1;
+            }
+            if (h.contains("+")) {
+                isToken("+");
+                return 1;
+            }
+            
+            
+            
             if (h.contains(")")) {
-                g = h.split(")");
-                int p = openStatement(g[0]);
-                if (p == 0) {
-                    isToken(")");
-                    return 1;
-                }
+                isToken(")");
+                return 3;
+
+            }
+            if (h.equals("{")) {
+                isToken(h);
+                return 4;
             }
 
             isToken(h);
@@ -179,15 +163,22 @@ public class operations {
         return 0;
     }
 
-    int isV(String p) {
-        String[] h = p.split("");
-        for (int i = 0; i < h.length; i++) {
+    int isV(String[] h, int start) {
+        for (int i = start; i < h.length; i++) {
             if (openStatement(h[i]) == 0) {//if var
-                if (isVariable(h[++i]) == 0) {//if not operand
-                    return 0;
+                i++;
+                if (i == (h.length - 1) && isSymbol(h[i]) == 0) {//if not operand or ends on variable
+                    System.out.println(h[i]);
+                    return 0; //will not run
+                } else if (i < (h.length) && isSymbol(h[i]) == 2 && openStatement(h[i + 1]) == 1) {  //if open paranthesis
+                    i++;
+                } else if ((i + 1) == (h.length - 1) && isSymbol(h[i]) == 3 && isSymbol(h[i + 1]) == 4) {  //if close paranthesis then open brace
+                    //System.out.println(h[i] + " " + h[i + 1]);
+                    return 1;
                 }
             } else {
-                return 0;
+                System.out.println(h[i] + " " + h[i + 1]);
+                return 0; //if not a variable will not run
             }
         }
         return 1;
