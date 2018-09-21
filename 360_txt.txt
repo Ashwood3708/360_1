@@ -5,7 +5,7 @@ float x;
 float y;
 float z;
 float data;
-data = x * y / z;
+data = x * y  / z;
 }
 
 float Second test program;
