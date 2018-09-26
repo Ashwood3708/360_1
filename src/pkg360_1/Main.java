@@ -31,18 +31,20 @@ public class Main {
             String datatype = sc.nextLine();
             while (sc.hasNext() && nonerror == 1) {
                 datatype = sc.nextLine();
-                System.out.println(datatype);
+                
                 String[] u = datatype.split(" ");
 
                 if (r.openStatement(u[0]) == 1) {  
-                    nonerror = r.isV(u,1);
+                    nonerror = r.isStructure(u,1);
                 }else if (u[1].equals("=")){
-                    nonerror = r.isV(u, 0);
+                    nonerror = r.isStructure(u, 0);
                 } else {
+                    r.setErrorMsg("wrong begining notation");
                     nonerror = 0;
                 }
 
                 if (r.endStatement(datatype) == 0) {
+                    r.setErrorMsg("wrong ending notation");
                     nonerror = 0;
                 }
                 //System.out.println();
@@ -54,7 +56,8 @@ public class Main {
                 System.out.println("program runs");
                 r.print();
             } else if(nonerror == 0){
-                System.out.println("program does not run 1");
+                System.out.println("program does not run ");
+                System.out.println("error: " + r.getErrorMsg());
             }
 
         } catch (IOException e) {

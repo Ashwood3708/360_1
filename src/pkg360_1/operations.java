@@ -16,7 +16,9 @@ public class operations {
 
     ArrayList<String> lexemes = new ArrayList<String>();
     ArrayList<String> tokens = new ArrayList<String>();
+    private String errorMsg = "";
 
+    //checks if statement opens correctly
     public int openStatement(String x) {
 
         if (x.equals("") || x.equals(" ")) {
@@ -62,14 +64,18 @@ public class operations {
             isToken(x);
             return 1;
         }
+        if (x.contains("(") || x.contains(")") || x.contains("{") || x.contains("}")) {
+            return 2;
+        }
 
         // if n=1 then there is a datatype or }
         //if n =0 then there is variable
+        isToken(x);
         return 0;
 
     }
 
-    // this function takes in a string and checks the last character of the string to see if statements and methods are properly closed
+    //checks the last character of the string to see if statements and methods are properly closed
     int endStatement(String theStr) {
         if (theStr.equals("") || theStr.equals(" ")) {
             return 1;
@@ -90,7 +96,9 @@ public class operations {
 
     }
 
+    //checks if special symbol
     int isSymbol(String h) {
+
         try {
 
             if (h.equals("+") || h.equals("-") || h.equals("*") || h.equals("/") || h.equals("=")) {
@@ -99,7 +107,7 @@ public class operations {
             }
             if (h.equals(";")) {
                 isToken(h);
-                return 2;
+                return 1;
             }
 
             if (h.contains("(){")) {
@@ -108,22 +116,7 @@ public class operations {
                 isToken("{");
                 return 1;
             }
-            if (h.contains("){")) {
-                isToken(")");
-                isToken("{");
-                return 1;
-            }
 
-            if (h.contains("(")) {
-                isToken("(");
-                return 2;
-
-            }
-            if (h.equals(",")) {
-                isToken(",");
-                return 2;
-
-            }
             if (h.contains("*")) {
                 isToken("*");
                 return 1;
@@ -140,17 +133,9 @@ public class operations {
                 isToken("+");
                 return 1;
             }
-            
-            
-            
-            if (h.contains(")")) {
-                isToken(")");
-                return 3;
 
-            }
-            if (h.equals("{")) {
-                isToken(h);
-                return 4;
+            if (h.contains("(") || h.equals("(") || h.contains(")") || h.equals(")")) {
+                return 0;
             }
 
             isToken(h);
@@ -158,32 +143,43 @@ public class operations {
 
         } catch (Exception e) {
 
-            System.out.println("program will not run 2 = " + h);
+            System.out.println("program will not unknown symbol = " + h);
         }
         return 0;
     }
 
-    int isV(String[] h, int start) {
+    //checks structure of code one line at a time
+    int isStructure(String[] h, int start) {
         for (int i = start; i < h.length; i++) {
             if (openStatement(h[i]) == 0) {//if var
                 i++;
-                if (i == (h.length - 1) && isSymbol(h[i]) == 0) {//if not operand or ends on variable
-                    System.out.println(h[i]);
-                    return 0; //will not run
-                } else if (i < (h.length) && isSymbol(h[i]) == 2 && openStatement(h[i + 1]) == 1) {  //if open paranthesis
-                    i++;
-                } else if ((i + 1) == (h.length - 1) && isSymbol(h[i]) == 3 && isSymbol(h[i + 1]) == 4) {  //if close paranthesis then open brace
-                    //System.out.println(h[i] + " " + h[i + 1]);
-                    return 1;
+                if (i < (h.length - 1)) { //if not last input
+                    if (isSymbol(h[i]) == 0) { //
+                        System.out.println(h[i]);
+                        errorMsg = "inncorrect structure";
+                        return 0; //will not run
+                    }
+                } else if (i == (h.length - 1)) {//if last input
+                    if (isSymbol(h[i]) == 0) { //if not operand or ends on variable
+                        System.out.println(h[i]);
+                        errorMsg = "unknown operand or ends on variable";
+                        return 0; //will not run
+                    }
                 }
+            } else if (openStatement(h[i]) == 2) {
+                System.out.println(h[i]);
+                errorMsg = "inncorrect structure";
+                return 0; //will not run
             } else {
                 System.out.println(h[i] + " " + h[i + 1]);
+                errorMsg = "cant have keywords side by side";
                 return 0; //if not a variable will not run
             }
         }
         return 1;
     }
 
+    //add token and lexeme to array list
     void isToken(String p) {
         int n = 0;
         // switch statement that finds lexemes and tokens and add them to an arrayList
@@ -307,10 +303,12 @@ public class operations {
         }
     }
 
+    //call print 
     void print() {
         operations.print(lexemes, tokens);
     }
 
+    //print list of lexems and tokens
     public static void print(ArrayList<String> lex, ArrayList<String> tok) {
         String heading1 = "Lexemes";
         String heading2 = "Tokens";
@@ -321,6 +319,16 @@ public class operations {
             System.out.printf("%-15s %-15s %n", lex.get(i), tok.get(i));
         }
         System.out.println(divider);
+    }
+
+    //get error message
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    //set error msg
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
 }

@@ -8,8 +8,3 @@ float data;
 data = x * y / z;
 }
 
-float Second test program;
-
-float mul( float m, float c){
-m = m * c;
-}
