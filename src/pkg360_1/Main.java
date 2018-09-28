@@ -21,10 +21,13 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         operations r = new operations();
+        System.out.println("Insert full file name  ex: file.txt");        
 
         try {
-
-            File file = new File("360_txt.txt");
+        Scanner name = new Scanner(System.in);
+        String g = name.next();
+        System.out.println();
+            File file = new File(g);
             Scanner sc = new Scanner(file);
             int nonerror = 1;
 
@@ -54,6 +57,7 @@ public class Main {
 
             if (nonerror == 1) {
                 System.out.println("program runs");
+                System.out.println();
                 r.print();
             } else if(nonerror == 0){
                 System.out.println("program does not run ");
